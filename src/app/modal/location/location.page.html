@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Please Select Your Location</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="locForm" (ngSubmit)="submitForm()" novalidate>
+    <ion-item>
+      <ion-label>Location</ion-label>
+      <ion-select placeholder="Select One" formControlName="loc">
+        <ng-container *ngFor="let loc of locationList">
+          <ion-select-option value="{{loc.id}}">{{loc.name}}</ion-select-option>
+        </ng-container>
+      </ion-select>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.loc.errors?.required">
+      Location is required.
+    </span>
+
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" type="submit" size="large" class="button-main">Set Location</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

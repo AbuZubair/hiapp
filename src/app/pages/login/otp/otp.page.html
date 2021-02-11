@@ -1,0 +1,52 @@
+<ion-content class="ion-padding contents">
+  <ion-grid>
+    <ion-row class="ion-margin-top">
+      <ion-col class="ion-align-self-center ion-text-center title-bold">
+        OTP Verification
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding">
+      <ion-col class="ion-align-self-center ion-text-center icon-sec">
+        <img src="assets/icon/Message.svg" width="50%" alt="">
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-start ion-padding-end">
+      <ion-col class="ion-align-self-center ion-text-center text-content">
+        Enter the OTP sent to
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-start ion-padding-end wording-sec">
+      <ion-col class="ion-align-self-center ion-text-center text-content">
+        <span>{{msisdn}}</span>
+      </ion-col>
+    </ion-row>
+    <form novalidate>
+      <ion-row class="ion-padding-start ion-padding-end">
+        <ion-col class="ion-align-self-center ion-text-center">
+          <ng-otp-input (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input>
+        </ion-col>
+      </ion-row>
+    </form>
+
+  </ion-grid>
+
+  <div style="width:100%;text-align:center">
+    <ion-row class="ion-padding-start ion-padding-end">
+      <ion-col class="ion-align-self-center ion-text-center text-content">
+        This should send via SMS, but it's just a trial.
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-start ion-padding-end wording-sec">
+      <ion-col class="ion-align-self-center ion-text-center text-content">
+        <span *ngIf="!hasFinished" >You'll get your OTP in {{displayTime}}</span>
+        <span *ngIf="hasFinished"><b>{{resOtp}}</b></span>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <ion-row>
+    <ion-col>
+      <ion-button expand="block" type="submit" size="large" class="button-main" (click)="submitForm()" [disabled]="disable">Verify OTP</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>

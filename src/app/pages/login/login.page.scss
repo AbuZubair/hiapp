@@ -1,0 +1,39 @@
+ion-content{
+    // --background: #ffffff url('../../../assets/icon/logo-3-2.jpg') -50px -20px/70% 40% no-repeat ;
+}
+
+.icon-sec{
+    margin:2.5rem 0;
+}
+
+.wording-sec{
+    margin-bottom:1.5em;
+}
+
+.text-content{
+    color: #A5A5A5 !important;
+}
+
+.text-content span{
+    color: #484848 !important;
+}
+
+@media (min-width:340px) AND (max-width:390px) {
+    .icon-sec{
+        margin:1.5rem 0;
+    }
+    
+    .wording-sec{
+        margin-bottom:0.5em;
+    }
+}
+
+@media (max-width:340px) {
+    .icon-sec{
+        margin:0;
+    }
+    
+    .wording-sec{
+        margin-bottom:0;
+    }
+}

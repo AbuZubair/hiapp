@@ -1,0 +1,38 @@
+<ion-content class="ion-padding contents">
+  <ion-grid>
+    <ion-row class="ion-margin-top">
+      <ion-col class="ion-align-self-center ion-text-center title-bold">
+        Login with OTP
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding">
+      <ion-col class="ion-align-self-center ion-text-center icon-sec">
+        <img src="assets/icon/Send.svg" width="50%" alt="">
+      </ion-col>
+    </ion-row>
+    <ion-row class="ion-padding-start ion-padding-end wording-sec">
+      <ion-col class="ion-align-self-center ion-text-center text-content">
+        Let's start with your phone number
+      </ion-col>
+    </ion-row>
+    <form [formGroup]="loginForm" (ngSubmit)="submitForm()" novalidate>
+      <ion-item>
+        <ion-label>+62</ion-label>
+        <ion-input minlength="9" formControlName="mobile" type="text" required></ion-input>
+      </ion-item>
+      <span class="error ion-padding" *ngIf="isSubmitted && errorControl.mobile.errors?.required">
+        Mobile number is required.
+      </span>
+      <span class="error ion-padding" *ngIf="isSubmitted && errorControl.mobile.errors?.pattern">
+        Only numerical values allowed.
+      </span>
+      
+      <ion-row>
+        <ion-col>
+          <ion-button expand="block" type="submit" size="large" class="button-main">Get OTP</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+
+  </ion-grid>
+</ion-content>
