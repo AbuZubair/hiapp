@@ -1,39 +1,115 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Home</ion-title>
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="2">
+          <ion-buttons>
+            <ion-menu-button>
+              <ion-icon color="primary" name="menu"></ion-icon>
+            </ion-menu-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col class="title-placeholder">
+          <ion-title>List of Victims</ion-title>
+        </ion-col>
+        <ion-col size="2"></ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-searchbar animated></ion-searchbar>
+  <ion-searchbar animated (ionInput)="filterList($event)" (ionCancel)="getData()" (ionClear)="getData()"></ion-searchbar>
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      <ion-card-title>Card Title</ion-card-title>
-    </ion-card-header>
+  <ng-container *ngIf="!victimList">    
+    <ion-card>
+      <ion-item detail lines="none" style="--padding-end:0">
+        <ion-avatar slot="start" style="margin-inline-end: 0;">
+          <ion-skeleton-text animated style="border-radius: 50%;"></ion-skeleton-text>                 
+        </ion-avatar>
+        <ion-card-header>  
+          <ion-card-title><ion-skeleton-text animated style="width: 5em;"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text animated style="width: 3em"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>          
+        
+      <ion-card-content>
+        <ion-thumbnail slot="start" style="width: 100%; height: 100px;">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-item detail lines="none" style="--padding-end:0">
+        <ion-avatar slot="start" style="margin-inline-end: 0;">
+          <ion-skeleton-text animated style="border-radius: 50%;"></ion-skeleton-text>                 
+        </ion-avatar>
+        <ion-card-header>  
+          <ion-card-title><ion-skeleton-text animated style="width: 5em;"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text animated style="width: 3em"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>          
+        
+      <ion-card-content>
+        <ion-thumbnail slot="start" style="width: 100%; height: 100px;">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-item detail lines="none" style="--padding-end:0">
+        <ion-avatar slot="start" style="margin-inline-end: 0;">
+          <ion-skeleton-text animated style="border-radius: 50%;"></ion-skeleton-text>                 
+        </ion-avatar>
+        <ion-card-header>  
+          <ion-card-title><ion-skeleton-text animated style="width: 5em;"></ion-skeleton-text></ion-card-title>
+          <ion-card-subtitle><ion-skeleton-text animated style="width: 3em"></ion-skeleton-text></ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>          
+        
+      <ion-card-content>
+        <ion-thumbnail slot="start" style="width: 100%; height: 100px;">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ng-container *ngIf="victimList">
+    <div *ngIf="victimList.length > 0">
+      <ion-card *ngFor="let data of victimList">
+        <ion-item detail lines="full" style="--padding-end:0" (click)="edit(data)">
+          <ion-avatar slot="start" style="margin-inline-end: 0;">
+            <img [src]="data.photo" />                  
+          </ion-avatar>
+          <ion-card-header>  
+            <ion-card-title>{{data.name}}</ion-card-title>
+            <ion-card-subtitle>Age : {{data.age}}</ion-card-subtitle>
+          </ion-card-header>
+        </ion-item>          
+          
+        <ion-card-content>
+          {{data.address}}
+        </ion-card-content>
   
-    <ion-card-content>
-      Keep close to Nature's heart... and break clear away, once in awhile,
-      and climb a mountain or spend a week in the woods. Wash your spirit clean.
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      <ion-card-title>Card Title</ion-card-title>
-    </ion-card-header>
+        <ion-item>
+          <ion-icon name="trash" slot="end" color="primary" (click)="presentAlertConfirm(data)"></ion-icon>
+        </ion-item>        
+    
+      </ion-card>
+    </div>
+    <div *ngIf="victimList.length == 0">
+      <ion-grid class="no-data">
+        <ion-row>
+          <img src="assets/icon/no_data.png" width="90%" alt="">
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ng-container>
   
-    <ion-card-content>
-      Keep close to Nature's heart... and break clear away, once in awhile,
-      and climb a mountain or spend a week in the woods. Wash your spirit clean.
-    </ion-card-content>
-  </ion-card>
-
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="add" (click)="add()"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

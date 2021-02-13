@@ -11,32 +11,29 @@ import { AuthService } from './services/auth/auth.service';
 import { SharedService } from './services/shared.service';
 import { ToastService } from './services/toast/toast.service';
 
+import { FCM } from '@ionic-native/fcm/ngx';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  public selectedIndex = 0;
-  lastTimeBackPress = 0;
-  timePeriodToExit = 2000;
-  backButtonSubscription;
+  public selectedIndex: number = 0;
+  lastTimeBackPress: number = 0;
+  timePeriodToExit: number = 2000;
   @ViewChild(IonRouterOutlet,{static: false}) routerOutlet: QueryList<IonRouterOutlet>
-  loading
-
-  url
-  title
-  menus
-  profile
-  open;
   
-  togle;
+  url: string;
+  title: string;
+  profile:any
+  togle: boolean;
   
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-
+    private fcm: FCM,
     private router: Router,
     private sharedService: SharedService,
     private authService: AuthService,
@@ -70,7 +67,7 @@ export class AppComponent {
       document.addEventListener('ionBackButton', (ev: BackButtonEvent) => {
         ev.detail.register(-1, () => {
           const path = window.location.pathname;
-          if (path === '/tabs' || path === '/login') {
+          if (path === '/home' || path === '/dashboard' || path === '/login') {
             if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
               navigator['app'].exitApp();
             } else {
@@ -93,25 +90,31 @@ export class AppComponent {
       this.authService.authenticationState.next(state)
       if (!state) {
         this.router.navigate(['login']);
+        this.authService.userData.subscribe(res => {
+          this.profile = res
+        })
       }else{
         this.storage.get('user').then((user) => {
+          this.profile = user
           this.authService.user.next(user)
-          if(user.role == 'admin')this.router.navigate(['dashboard'])
-          else this.router.navigate(['home']);
+          if(user.role == 'admin'){
+            this.authService.setTokenFcm(user)
+            this.router.navigate(['dashboard'])
+          }else{
+            this.router.navigate(['home']);
+          }
         })
       }
     })
-  }
-
-  getProfile(){
-    // this.profile = this.authService.generateToken()
-  }
+  }   
 
   logout(){
     this.storage.clear();
     this.storage.set('login', false);
     this.authService.authenticationState.next(false)
+    this.authService.user.next(null)
     this.router.navigate(['login']);
+    this.profile = undefined
   }
 
   async presentToast() {

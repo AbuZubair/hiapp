@@ -8,6 +8,8 @@ import { SharedService } from '../shared.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { first, take, map } from 'rxjs/operators';
 
+import { FCM } from '@ionic-native/fcm/ngx';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,13 +18,16 @@ export class AuthService {
   public authenticationState = new BehaviorSubject(false);
   isLoggedIn: BehaviorSubject<any> = new BehaviorSubject<any>(false)
   user: BehaviorSubject<any> = new BehaviorSubject<any>(null)
+  userData = this.user.asObservable();
   collectionName = 'Users';
 
   constructor(
     private storage: Storage, 
     private firestore: AngularFirestore,
     private platform: Platform,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private fcm: FCM,
+    private router: Router,
     ) { 
     this.platform.ready().then(() => {
       this.ifLoggedIn();
@@ -59,6 +64,10 @@ export class AuthService {
         reject(err)
       });
     })    
+  }
+
+  getToken(){
+    return this.firestore.collection(this.collectionName, ref => ref.where('role', "==", 'admin')).snapshotChanges()
   }
 
   createUser(record) {
@@ -108,5 +117,34 @@ export class AuthService {
     return this.user.value
   }
 
+  setTokenFcm(user){
+    this.fcm.subscribeToTopic('all');
+    this.fcm.getToken().then(token=>{
+      console.log('token',token);
+      this.updateToken(user,token)
+    })
+    this.fcm.onTokenRefresh().subscribe(token=>{
+      this.updateToken(user,token)
+    });   
+  }
+
+  updateToken(user,token){
+    let data = user
+    let docId = user.docId
+    delete data.docId
+    data.token = token
+    this.updateUser(docId,user)
+  }
+
+  setNotif(){
+    this.fcm.onNotification().subscribe(data=>{
+      if(data.wasTapped){
+        this.router.navigate(['dashboard'])
+        console.log("Received in background");
+      } else {
+        console.log("Received in foreground");
+      };
+    })
+  }
 
 }

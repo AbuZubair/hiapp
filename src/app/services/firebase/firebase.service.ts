@@ -6,7 +6,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class FirebaseService {
 
-  collectionName = 'Products';
+  collectionName = 'Victims';
 
   constructor(
     private firestore: AngularFirestore
@@ -16,7 +16,11 @@ export class FirebaseService {
     return this.firestore.collection(this.collectionName).add(record);
   }
 
-  reads() {
+  reads(msisdn) {
+    return this.firestore.collection(this.collectionName, ref => ref.where('createdBy', "==", msisdn).orderBy('createdDate','desc')).snapshotChanges();
+  }
+
+  readAll() {
     return this.firestore.collection(this.collectionName).snapshotChanges();
   }
 

@@ -1,3 +1,15 @@
 ion-icon {
   color: #fff;
 }
+
+ion-grid.no-data{
+  height: 100%;  
+}
+
+.no-data ion-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 450px;  
+}

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "265425859597",
+    "firebase_url": "https://hydromart-c937b.firebaseio.com",
+    "project_id": "hydromart-c937b",
+    "storage_bucket": "hydromart-c937b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265425859597:android:c804b83d06c5391b585144",
+        "android_client_info": {
+          "package_name": "com.abu.zubair"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "265425859597-867gbg75c6an6enqfg6f86vrc5el9cpd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5slxdlGK1XcerrQe8pPPrENwhbHyc39M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "265425859597-867gbg75c6an6enqfg6f86vrc5el9cpd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

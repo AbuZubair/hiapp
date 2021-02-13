@@ -14,7 +14,6 @@ import { ToastService } from '../../services/toast/toast.service';
 export class LocationPage implements OnInit {
 
   @Input() data: any;
-  @Input() docId: any;
   locForm: FormGroup;
   isSubmitted = false; 
   locationList : any
@@ -58,7 +57,9 @@ export class LocationPage implements OnInit {
     } else {   
       try {        
         this.data['loc'] = this.locForm.value.loc
-        this.authService.updateUser(this.docId,this.data) 
+        let docId = this.data.docId
+        delete this.data.docId
+        this.authService.updateUser(docId,this.data) 
         this.setValue(this.data)
         this.dismiss()
       } catch (error) {

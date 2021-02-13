@@ -1,9 +1,263 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="2">
+          <ion-buttons>
+            <ion-menu-button>
+              <ion-icon color="primary" name="menu"></ion-icon>
+            </ion-menu-button>
+          </ion-buttons>
+        </ion-col>
+        <ion-col class="title-placeholder">
+          <ion-title>Dashboard</ion-title>
+        </ion-col>
+        <ion-col size="2"></ion-col>
+      </ion-row>
+    </ion-grid>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding [fullscreen]="true">
+  <div id="container">
+    <ion-card class="card-header" *ngIf="loadingTop">
+      <ion-row style="padding:10px;padding-bottom: 0;">
+        <ion-skeleton-text animated style="width: 50%;margin-left: auto;margin-right: auto;"></ion-skeleton-text>
+      </ion-row>
+      <ion-row style="padding:10px;padding-top: 0;">
+        <ion-col>
+          <div class="header-content">
+            <ion-thumbnail slot="start" style="width:100%;height:20px">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+          </div>
+          <div class="curr-font">
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </div>
+        </ion-col>
 
+        <ion-col>          
+          <div class="header-content">
+            <ion-thumbnail slot="start" style="width:100%;height:20px">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+          </div>
+          <div class="curr-font">
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </div>
+        </ion-col>
+
+        <ion-col>          
+          <div class="header-content">
+            <ion-thumbnail slot="start" style="width:100%;height:20px">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+          </div>
+          <div class="curr-font">
+            <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card>
+
+    <ion-card class="card-header" *ngIf="!loadingTop">
+      <ion-row style="padding:10px;padding-bottom: 0;">
+        <div class="header-font val-font-3x" style="margin-left: auto;margin-right: auto;">Top 3 Region (No. of Victims)</div>
+      </ion-row>
+      
+      <ion-row style="padding:10px;padding-top: 0;">   
+        <ng-container *ngIf="top3.length==0">
+          <ion-col style="width:33%">          
+            <ion-row class="header-content">
+              <ion-col size="10" size-sm="8" class="ion-no-padding">
+                <span class="val-font-3x"></span>
+              </ion-col>
+            </ion-row>
+            <div class="val-font-2x"></div>
+          </ion-col>
+          <ion-col style="width:33%">          
+            <ion-row class="header-content">
+              <ion-col size="10" size-sm="8" class="ion-no-padding" style="text-align: center;">
+                <span class="val-font-3x"><b>-</b></span>
+              </ion-col>
+            </ion-row>
+            <div class="val-font-2x"></div>
+          </ion-col>
+          <ion-col style="width:33%">          
+            <ion-row class="header-content">
+              <ion-col size="10" size-sm="8" class="ion-no-padding">
+                <span class="val-font-3x"></span>
+              </ion-col>
+            </ion-row>
+            <div class="val-font-2x"></div>
+          </ion-col>
+        </ng-container>   
+
+        <ng-container *ngIf="top3.length>0">
+          <ion-col *ngFor="let header of top3; let i = index" style="width:33%">          
+            <ion-row class="header-content">
+              <ion-col size="10" size-sm="8" class="ion-no-padding">
+                <span class="val-font-3x"><b>{{header.count}} </b></span>
+              </ion-col>
+            </ion-row>
+            <div class="val-font-2x">{{header.loc | titlecase}}</div>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ion-card>
+
+    <ion-row *ngIf="!chartData">
+      <ion-col class="title-bold" style="text-align:center;"><ion-skeleton-text animated style="width: 30%;margin:0 auto"></ion-skeleton-text></ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="chartData">
+      <ion-col class="title-bold" style="text-align:center;font-size: 3.055vw;">VICTIMS PER AGE</ion-col>
+    </ion-row>
+
+    <ion-card *ngIf="loading && !chartData">
+      <ion-card-content>
+        <ion-thumbnail slot="start"
+            style="width: 100%; height: 250px;">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card [hidden]="!chartData">  
+      <ion-card-content style="padding-inline-start: 0; padding-inline-end: 0;">
+        <app-chart-drilldown *ngIf="chartData && !loading" [chartHeight]="chartData?.chartHeight" [chartType]="chartData?.chartType"
+        [chartYamin]="chartData?.chartMin" [chartTitle]="chartData?.chartTitle"
+        [chartSeries]="chartData?.chartSeries" [chartLabel]="chartData?.chartLabel"></app-chart-drilldown>
+      </ion-card-content>         
+    </ion-card>
+
+    <ion-row *ngIf="loadingTable">
+      <ion-col class="title-bold" style="text-align:center;"><ion-skeleton-text animated style="width: 30%;margin:0 auto"></ion-skeleton-text></ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!loadingTable">
+      <ion-col class="title-bold" style="text-align:center;font-size: 3.055vw;">VICTIMS DETAILS</ion-col>
+    </ion-row>
+    
+    <ion-grid *ngIf="loadingTable">
+      <ion-row>
+        <ion-col size="6">
+          <ion-card class="tables table table-card">
+            <ion-card-header>
+              <ion-card-title style="text-align: center;"><ion-skeleton-text animated style="width: 50%;margin-left: auto;margin-right: auto;"></ion-skeleton-text></ion-card-title>   
+            </ion-card-header>
+            <ion-item lines="full">                    
+              <ion-grid>
+                <ion-row>            
+                  <ion-avatar style="margin-left: auto;margin-right: auto;">
+                    <ion-skeleton-text animated style="border-radius: 50%;"></ion-skeleton-text>                 
+                  </ion-avatar>
+                </ion-row>
+                <ion-row style="margin-top: 1em;">                      
+                  <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+                </ion-row>
+                <ion-row>
+                  <ion-col style="padding-inline-start: 0;">
+                    <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text> 
+                  </ion-col>   
+                  <ion-col>
+                    <ion-thumbnail style="width:20px;height:20px;float: right;">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-thumbnail>
+                  </ion-col>                                             
+                </ion-row> 
+              </ion-grid>                                                                             
+            </ion-item>
+          </ion-card>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card class="tables table table-card">
+            <ion-card-header>
+              <ion-card-title style="text-align: center;"><ion-skeleton-text animated style="width: 50%;margin-left: auto;margin-right: auto;"></ion-skeleton-text></ion-card-title>   
+            </ion-card-header>
+            <ion-item lines="full">                    
+              <ion-grid>
+                <ion-row>            
+                  <ion-avatar style="margin-left: auto;margin-right: auto;">
+                    <ion-skeleton-text animated style="border-radius: 50%;"></ion-skeleton-text>                 
+                  </ion-avatar>
+                </ion-row>
+                <ion-row style="margin-top: 1em;">                      
+                  <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text>
+                </ion-row>
+                <ion-row>
+                  <ion-col style="padding-inline-start: 0;">
+                    <ion-skeleton-text animated style="width: 80%;"></ion-skeleton-text> 
+                  </ion-col>   
+                  <ion-col>
+                    <ion-thumbnail style="width:20px;height:20px;float: right;">
+                      <ion-skeleton-text animated></ion-skeleton-text>
+                    </ion-thumbnail>
+                  </ion-col>                                             
+                </ion-row> 
+              </ion-grid>                                                                             
+            </ion-item>                 
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+    <ng-container *ngIf="!loadingTable && !data?.length">
+      <ion-card class="tables table">
+        <ion-card-header>
+          <ion-card-title style="text-align: center;"></ion-card-title>   
+        </ion-card-header>
+        <ion-card-content>
+          <table width="100%">
+              <tr>
+                <td>No Data!</td>
+              </tr>
+          </table>
+        </ion-card-content>      
+      </ion-card>
+    </ng-container>
+    <ng-container *ngIf="!loadingTable && data?.length > 0">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" *ngFor="let data of data; let i = index" class="table-card">
+            <ion-card [ngClass]="{'odd': i%2 != 0,'even':  i%2 == 0}">
+              <ion-card-header>
+                <ion-card-title style="text-align: center;">{{data.loc | titlecase}}</ion-card-title>   
+              </ion-card-header>
+              <div class="scroll-container" style="height: 200px !important;">
+                <div class="scroll" scrollY="true" style="width: 100%;"> 
+                  <ion-item lines="full" *ngFor="let det of data.data">                    
+                    <ion-grid>
+                      <ion-row>
+                        <ion-avatar style="margin-left: auto;margin-right: auto;">
+                          <img [src]="det.photo" >
+                        </ion-avatar>
+                      </ion-row>
+                      <ion-row style="margin-top: 1em;">                      
+                        <ion-label style="white-space: normal;">
+                          <h3>{{det.name}}</h3>                                               
+                        </ion-label>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col style="padding-inline-start: 0;">
+                          <p>{{det.age}} yo</p> 
+                        </ion-col>   
+                        <ion-col style="text-align: right;">
+                          <p>
+                            <ion-icon style="margin-inline-start: 0;" slot="end" *ngIf="det.gender == 'P'" name="female"></ion-icon>
+                            <ion-icon style="margin-inline-start: 0;" slot="end" *ngIf="det.gender == 'L'" name="male"></ion-icon>
+                          </p> 
+                        </ion-col>                                             
+                      </ion-row> 
+                    </ion-grid>                                                                             
+                  </ion-item>
+                </div>
+              </div>                  
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ng-container>
+    
+  </div>
 </ion-content>

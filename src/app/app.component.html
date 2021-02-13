@@ -1,3 +1,57 @@
-<ion-app>
+<!-- <ion-app>
   <ion-router-outlet></ion-router-outlet>
+</ion-app> -->
+
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu contentId="main-content" type="overlay">
+      <ion-content>     
+        <div class="header">
+          <div class="header-wrapper">
+            <div *ngIf="profile">
+              <div class="ion-padding-top ion-margin-start title-header">
+                <ion-label class="val-font-2x">{{profile?.role | titlecase }}</ion-label>
+              </div>
+              <ion-note class="ion-margin-start val-font">{{profile?.msisdn}}</ion-note>
+            </div>
+            <div *ngIf="!profile">
+              <div class="ion-padding-top ion-margin-start title-header">
+                <ion-skeleton-text animated style="width:30%"></ion-skeleton-text>
+              </div>
+              <ion-note class="ion-margin-start"><ion-skeleton-text animated style="width:8em"></ion-skeleton-text></ion-note>
+            </div>
+          </div>
+        </div>
+
+        <ion-list id="inbox-list" lines="none">          
+          <ion-menu-toggle auto-hide="false">            
+            <ion-item (click)="logout()" class="class-icons ico-ion val-font" routerDirection="root" lines="none" detail="false">
+              <ion-icon class="class-icons ico-ion" name="log-out"></ion-icon>              
+              <ion-label class="val-font">Logout</ion-label>
+            </ion-item>            
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+
+      <ion-footer class="ion-no-border">
+        <ion-menu-toggle>
+          <ion-item class="footer">            
+            <ion-row slot="end" class="helper">
+              <ion-col class="ava">
+                <!-- <ion-avatar slot="start">
+                  <img src="assets/icon/jNl5EPNZ_400x400.jpg" />                  
+                </ion-avatar>-->
+                <img class="val-font" src="assets/icon/jNl5EPNZ_400x400.jpg" width="100%" alt="">
+              </ion-col>
+              <ion-col class="version-sec thin-text val-font-s">
+                Abu Zubair
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-footer>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>
+

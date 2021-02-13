@@ -55,6 +55,8 @@ export class LoginPage implements OnInit {
                     msisdn: this.loginForm.value.mobile  
                 }
               };
+              this.loginForm.reset()
+              this.isSubmitted = false
               this.router.navigate(['login/otp'],navigationExtras)
             })            
           } catch (error) {

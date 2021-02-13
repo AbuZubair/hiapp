@@ -30,6 +30,8 @@
     border-radius: 5px;
 }
 
+.thin-text{color: #A5A5A5 !important;}
+
 .page-title{color:#FF4081;}
 
 .title-bold, .title-lil-bold {font-family: 'Product Sans Bold';}
@@ -43,3 +45,75 @@
     color: #fff;
     font-size:12px;
 }
+ion-skeleton-text{
+    --border-radius:5px;
+}
+
+.helper .ava {height:0.85rem;width:0.85rem;}
+
+.helper .ava img{border-radius: 50%;}
+
+.class-icons {
+    color: var(--ion-text-color);
+}
+
+//.class-icons svg {height: inherit;}
+
+.segment-text{text-transform: capitalize !important;}
+
+.val-font-ss{    
+    font-size:8px !important;
+    font-size:0.5rem !important;
+    font-size:2.222vw !important;
+}
+
+.val-font-s{ 
+    font-size:10px !important;
+    font-size:0.6250rem !important;
+    font-size:2.777vw !important;
+}
+
+.val-font-1s{ 	
+    font-size:11px !important;	
+    font-size:0.6875rem !important;
+    font-size:3.055vw !important;     
+}
+
+.val-font{ 	
+    font-size:13px !important;
+    font-size:0.8125rem !important;
+    font-size:3.611vw !important;     
+}
+
+.val-font-1x{
+    font-size:14px !important;
+    font-size:0.8125rem !important;
+    font-size:3.888vw !important;
+}
+
+.val-font-2x{
+    font-size:16px !important;
+    font-size:1rem !important;
+    font-size:4.444vw !important;
+}
+
+.val-font-3x{ 
+    font-size:18px !important;
+    font-size:1.1250rem !important;
+    font-size:5vw !important;
+}
+
+.menu-placeholder{width: 15%;float: left;}
+// .menu-placeholder ion-icon.md.hydrated{height: 3.333vw;width: 3.333vw;transform: translateY(50%);}
+
+.title-placeholder {
+    width: 70%;
+    text-align: center;
+    display: inline-block;
+}
+
+ion-col.version-sec.thin-text.val-font-s.ios.hydrated{margin-left: 0.7rem;}
+
+.highcharts-container tspan{font-size: 0.6250rem;}
+.highcharts-legend rect.highcharts-point{width: 0.5rem;height: 0.5rem;transform: translateY(1.5%);}
+.highcharts-axis .highcharts-axis-title tspan{font-size: 0.6250rem;}

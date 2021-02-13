@@ -79,7 +79,7 @@ export class SharedService {
   }
 
   getDate(date: any) {
-    const dateOk = ('0' + date.getDate()).slice(-2) + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear();
+    const dateOk = ('0' + date.getDate()).slice(-2) + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
     return dateOk;
   }
 
@@ -145,6 +145,15 @@ export class SharedService {
 
   getTimezone() {
     return new Date().toString().substring(28, 33);
+  }
+
+  groupingByKey(arr,key){
+    let group = arr.reduce((r, a) => { 
+      r[a[key]] = [...r[a[key]] || [], a];
+      return r;
+    }, {});
+
+    return group    
   }
 
 }

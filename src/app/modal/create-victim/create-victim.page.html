@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{title}}</ion-title>
+    <ion-icon name="close" (click)="dismiss()" style="position: absolute;right:1em;top:1em;font-size: 1.2em;">
+    </ion-icon>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="newForm" (ngSubmit)="submitForm()" novalidate>
+    <input type="hidden" formControlName="loc">
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input formControlName="name"></ion-input>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.name.errors?.required">
+      Name is required.
+    </span>
+
+    <ion-item>
+      <ion-label position="floating">Age</ion-label>
+      <ion-input type="number" formControlName="age"></ion-input>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.age.errors?.required">
+      Age is required.
+    </span>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.age.errors?.pattern">
+      Only numerical values allowed.
+    </span>
+
+    <ion-item>
+      <ion-label position="floating">Address</ion-label>
+      <ion-textarea formControlName="address"></ion-textarea>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.address.errors?.required">
+      Address is required.
+    </span>
+
+    <ion-item>
+      <ion-label position="floating">Gender</ion-label>
+      <ion-select placeholder="Select One" formControlName="gender">
+        <ion-select-option value="L">Male</ion-select-option>
+        <ion-select-option value="P">Female</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.gender.errors?.required">
+      Gender is required.
+    </span>
+
+    <ion-item>
+      <ion-button color="success" slot="start">
+        <span>Select Photo</span>
+        <input id="uploadBtn" type="file" class="upload" (change)="uploadFile($event.target.files)" />
+      </ion-button> 
+      
+      <ion-avatar slot="end">
+        <img *ngIf="filePath" [src]="filePath" />          
+        <img *ngIf="!filePath" src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+    </ion-item>
+    <ion-row>
+      <ion-col>
+        <div *ngIf="percentage | async as pct">
+          Progress: {{ pct | number }}%
+          <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+        </div>        
+        <div *ngIf="snapshot | async as snap">
+          <!-- File Size: {{ snap.totalBytes | fileSizePipe }} <span *ngIf="snap.bytesTransferred"> Transfered:
+          {{ snap.bytesTransferred | fileSizePipe }} </span> -->
+        </div>
+      </ion-col>
+    </ion-row>
+    <span class="error ion-padding" *ngIf="isSubmitted && errorControl.photo.errors?.required">
+      Photo is required.
+    </span>
+    
+   
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" type="submit" size="large" shape="round" class="button-main">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

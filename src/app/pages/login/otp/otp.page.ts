@@ -84,7 +84,7 @@ export class OtpPage implements OnInit {
 
   initTimer() {
     if (!this.timeInSeconds) { 
-      this.timeInSeconds = 20; 
+      this.timeInSeconds = 5; 
     }
   
     this.time = this.timeInSeconds;
@@ -146,7 +146,6 @@ export class OtpPage implements OnInit {
         }, 100);   
         if(this.otp == data['otp']){
           this.authService.updateUser(this.user[0].payload.doc.id,data) 
-                    
           this.redirect(data);
         }else{          
           this.toast.present('OTP is wrong')                 
@@ -161,32 +160,34 @@ export class OtpPage implements OnInit {
   }
 
   redirect(data){
+    let user = data
+    user.docId = this.user[0].payload.doc.id
     if(data['role'] == 'user'){
       if(!data['loc']){
-        this.presentModal(data)
+        this.presentModal(user)
       }else{
-        this.setValue(data)
+        this.setValue(user)
         this.router.navigate(['/']);
       }
     }else{
-      this.setValue(data)
+      this.setValue(user)
       this.router.navigate(['/dashboard']);
     }
   }
 
-  setValue(data){
+  setValue(user){    
     this.storage.set('login', true);
-    this.storage.set('user', data);
-    this.authService.user.next(data)
+    this.storage.set('user', user);
+    this.authService.user.next(user)
     this.authService.authenticationState.next(true);
+    if(user.role == 'admin')this.authService.setTokenFcm(user)
   }
 
-  async presentModal(data) {
+  async presentModal(user) {
     const modal = await this.modalController.create({
       component: LocationPage,
       componentProps: {
-        'data': data,
-        'docId': this.user[0].payload.doc.id
+        'data': user,
       }
     });
 
