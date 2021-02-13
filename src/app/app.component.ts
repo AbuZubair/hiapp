@@ -125,4 +125,11 @@ export class AppComponent {
     toast.present();
   }
 
+  refreshProfile(){
+    this.profile = undefined
+    setTimeout(() => {
+      this.profile = this.authService.getUser()
+    }, 500);    
+  }
+
 }
