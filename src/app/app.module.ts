@@ -18,6 +18,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { credentials } from './config/config';
 import { FCM } from '@ionic-native/fcm/ngx';
+import { Badge } from '@ionic-native/badge/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +36,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
     StatusBar,
     SplashScreen,
     FCM,
+    Badge,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: HTTP_INTERCEPTORS,

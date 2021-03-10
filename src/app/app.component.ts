@@ -12,6 +12,7 @@ import { SharedService } from './services/shared.service';
 import { ToastService } from './services/toast/toast.service';
 
 import { FCM } from '@ionic-native/fcm/ngx';
+import { Badge } from '@ionic-native/badge/ngx';
 
 @Component({
   selector: 'app-root',
@@ -40,6 +41,7 @@ export class AppComponent {
     private storage: Storage,
     private toastCtrl: ToastController,
     public toast:ToastService,
+    private badge: Badge
   ) {
     this.initializeApp();
   }
@@ -82,6 +84,19 @@ export class AppComponent {
       setTimeout(() => {
         this.splashScreen.hide();
       }, 2000);
+    });
+
+    this.getNotif()
+  }
+
+  getNotif(){
+    this.fcm.onNotification().subscribe(data => {
+      if(data.wasTapped){
+        this.badge.increase(1);
+        console.log("Received in background");
+      } else {
+        console.log("Received in foreground");
+      };
     });
   }
 
